@@ -24,3 +24,23 @@ and test_phone_at_start_of_text.
 **Setup confirmation:** [ ] App runs locally at localhost:5173
 
 **Cohort ledger:** [x] Issue added to cohort ledger
+
+## Week 8 — Reproduction & solution planning
+
+**Reproduction commit link:** https://github.com/Akhrorxuja/pathreview/commit/7922612
+
+**Reproduction summary:**
+Ran the existing unit test suite before fixing the code and confirmed
+`test_us_phone_formats` failed on parenthesized and space-separated phone
+numbers (e.g. `(555) 123-4567`, `+1 555 123 4567`), which passed through
+`scrub()` and `detect()` completely unredacted due to inconsistent
+separator handling in the `phone_us` regex.
+
+**PLAN.md link:** https://github.com/Akhrorxuja/pathreview/blob/fix/146-parenthesized-phone-redaction/PLAN.md
+
+**Walkthrough video (recommended):**
+
+**Blockers or open questions:**
+Still need to confirm the app runs locally at localhost:5173 — Docker
+Desktop install has been delayed by a slow internet connection. No other
+open questions on the fix itself; all four named tests pass.
