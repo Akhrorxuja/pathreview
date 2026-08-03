@@ -44,3 +44,47 @@ separator handling in the `phone_us` regex.
 Still need to confirm the app runs locally at localhost:5173 — Docker
 Desktop install has been delayed by a slow internet connection. No other
 open questions on the fix itself; all four named tests pass.
+
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+Implemented the core fix to the `phone_us` regex in `safety/pii_scrubber.py`,
+correcting the inconsistent separator groups so parenthesized and
+space-separated phone formats are properly redacted. All four tests named
+in issue #146 pass.
+
+**Next steps:**
+Run `make check` and `make test-unit` to compare against the pre-existing
+baseline on `main`, clean up any lint issues introduced by my own change,
+and open the PR for review.
+
+**Blockers:**
+Local environment setup took longer than expected (Python version mismatch,
+missing Rust toolchain for compiling `cryptography`), but resolved by
+installing Python 3.11 and Rust via rustup.
+
+---
+
+### Check-in 2 (end of week)
+
+**PR link:** https://github.com/ascherj/pathreview/pull/623
+
+**Branch:** fix/146-parenthesized-phone-redaction
+
+**What you built:**
+Fixed the `phone_us` regex in the PII scrubber so it consistently redacts
+US phone numbers across all common separator formats (dashes, dots, spaces,
+and parentheses), resolving issue #146.
+
+**Tests added or updated:**
+No new tests were added — the existing tests in
+`tests/unit/test_pii_scrubber.py` already covered the required scenarios.
+All four tests named in the issue now pass.
+
+**Self-review confirmation:** [x] make check passes  [x] make test-unit passes
+(No new lint errors or test failures introduced compared to `main`; see
+PR description for the full before/after comparison.)
+
+**Draft PR feedback received from:** none
