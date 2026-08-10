@@ -88,3 +88,77 @@ All four tests named in the issue now pass.
 PR description for the full before/after comparison.)
 
 **Draft PR feedback received from:** none
+
+## Week 10 — Iteration & reflection
+
+### Reviewer feedback
+
+**Feedback received:** [ ] Yes  [x] No — still awaiting review
+
+**Summary of feedback:**
+No reviewer feedback came in. Per the Su26 course note, reviewer feedback
+is not a feature this term, so no review was expected.
+
+**How you responded:**
+N/A — no feedback to respond to. I did post my PR link in the class
+Slack channel requesting peer feedback as recommended in Week 9.
+
+---
+
+### Reflection
+
+**What was harder than you expected?**
+Getting the local environment running was by far the hardest part of the
+whole module — harder than the actual bug fix. My Mac had an outdated
+Python (3.9) when the project required 3.11+, my pip version was too old
+to do editable installs from a pyproject.toml-only project, and once I
+got past that, `cryptography` and `libcst` failed to build because they
+needed a Rust compiler I didn't have installed. Each fix uncovered the
+next missing piece. The actual code change — fixing an inconsistent
+separator pattern in a regex — took a few minutes once I could run the
+tests. I underestimated how much of "real" contribution work is just
+getting your machine into a state where you can even start.
+
+**What did you learn about working in a large codebase?**
+I learned to scope my changes carefully and verify what I actually
+touched versus what was already broken. Running `make check` and
+`make test-unit` on this project surfaced 182 lint errors and dozens of
+failing tests that had nothing to do with my issue. Instead of panicking
+or trying to fix everything, I learned to isolate my diff (`git diff
+--name-only`), run tools scoped to just my file, and directly compare
+`main` against my branch to prove my change introduced zero new
+failures. That before/after comparison table ended up being the most
+convincing part of my PR description — it's a much stronger argument
+than just saying "my tests pass."
+
+**How did AI tools help — and where did they fall short?**
+AI assistance was most useful for debugging the regex itself — walking
+through exactly why `(?<!\d)` and inconsistent `[-.\s]?` groups caused
+certain formats to fail, and for troubleshooting the environment issues
+step by step (recognizing that `maturin`/Rust build failures meant a
+missing compiler, or that pip's dependency resolution needed a specific
+flag). Where it fell short was anything requiring my actual GitHub
+account, terminal, or physical machine — no AI tool can install Python
+or Rust for you, run `git push`, or click "Create pull request." I also
+had to catch and correct an AI-suggested command myself once (creating a
+branch inside my home directory instead of inside the actual cloned
+repo), which was a good reminder to actually read command output rather
+than just copy-pasting blindly.
+
+**What would you do differently if you started over?**
+I'd set up my full local dev environment (correct Python version, Rust,
+Docker) in Week 7 before even picking an issue, rather than discovering
+the gaps midway through Week 9 under deadline pressure. I'd also
+double-check early which repository a PR is actually targeting — I
+initially opened a PR against my own fork's `main` instead of the
+upstream `ascherj/pathreview`, which I only caught because I stopped to
+verify the URL instead of assuming it was correct.
+
+**What are you most proud of from this module?**
+Diagnosing the actual root cause of the regex bug rather than just
+patching the one example format mentioned in the issue title. The issue
+was titled around parenthesized numbers, but tracing through the pattern
+showed the real problem was inconsistent separator handling across all
+three digit groups — which also silently broke `+1 555 123 4567` in a
+way the issue never mentioned. Catching that made the fix genuinely
+correct instead of narrowly correct.
